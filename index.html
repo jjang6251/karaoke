@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Input with Buttons and Price Calculation</title>
+    <style>
+        body {
+            width: 820px;
+            height: 1180px;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            /* justify-content: center; */
+            align-items: center;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+        }
+
+        .kara {
+            margin: 20px 0;
+            font-size: 30px;
+        }
+
+        #container {
+            margin-top: 200px;
+            text-align: center;
+        }
+
+        #inputnum {
+            width: 200px;
+            height: 60px;
+            font-size: 24px;
+            text-align: center;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        #input-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 100px;
+            margin-bottom: 50px;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        button {
+            width: 50px;
+            height: 30px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            margin: 5px 0;
+        }
+
+        .increment {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .decrement {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .calculate {
+            background-color: #008CBA;
+            color: white;
+            margin-top: 20px;
+            width: 150px;
+            height: 50px;
+            font-size: 20px;
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+        #price {
+            margin-top: 20px;
+            font-size: 30px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <label class="kara"><input type="radio" name="group" value="청소년"> 청소년</label>
+        <label class="kara"><input type="radio" name="group" value="대학생"> 대학생</label>
+        <label class="kara"><input type="radio" name="group" value="성인"> 성인</label>
+
+        <div class="number-input" id="input-container">
+            <input type="number" id="inputnum" value="0">
+            <div class="button-container">
+                <button onclick="increment()" class="increment">+</button>
+                <button onclick="decrement()" class="decrement">-</button>
+            </div>
+        </div>
+        <button onclick="calculatePrice()" class="calculate">계산하기</button>
+        <div id="price">가격: 0원</div>
+    </div>
+
+    <script>
+        document.querySelectorAll('input[name="group"]').forEach((radio) => {
+            radio.addEventListener('change', (event) => {
+                if (event.target.checked) {
+                    handleRadioChange();
+                }
+            });
+        });
+
+        function handleRadioChange() {
+            updatePrice();
+        }
+
+        function increment() {
+            const input = document.getElementById('inputnum');
+            input.value = parseInt(input.value) + 1;
+        }
+
+        function decrement() {
+            const input = document.getElementById('inputnum');
+            if (parseInt(input.value) > 0) {
+                input.value = parseInt(input.value) - 1;
+            }
+        }
+
+        function calculatePrice() {
+            updatePrice();
+        }
+
+        function updatePrice() {
+            const group = document.querySelector('input[name="group"]:checked');
+            const input = document.getElementById('inputnum');
+            const count = parseInt(input.value);
+            let price = 0;
+
+            if (group) {
+                switch (group.value) {
+                    case '청소년':
+                        if (count <= 4) {
+                            price = 6000;
+                        } else {
+                            price = 6000 + (count - 4) * 1000;
+                        }
+                        break;
+                    case '대학생':
+                        if (count <= 3) {
+                            price = 8000;
+                        } else if (count === 4) {
+                            price = 10000;
+                        } else if (count === 5) {
+                            price = 15000;
+                        } else if (count === 6) {
+                            price = 20000;
+                        } else if (count >= 7 && count <= 8) {
+                            price = 25000;
+                        } else if (count >= 9 && count <= 10) {
+                            price = 30000;
+                        } else if (count >= 11) {
+                            price = 35000;
+                        }
+                        break;
+                    case '성인':
+                        if (count <= 4) {
+                            price = 15000;
+                        } else if (count >= 5 && count <= 6) {
+                            price = 20000;
+                        } else if (count >= 7 && count <= 8) {
+                            price = 25000;
+                        } else if (count >= 9 && count <= 10) {
+                            price = 30000;
+                        } else if (count >= 11) {
+                            price = 35000;
+                        }
+
+                        break;
+                }
+            }
+
+            document.getElementById('price').innerText = `가격: ${price}원`;
+        }
+    </script>
+</body>
+
+</html>
